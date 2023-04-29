@@ -24,18 +24,23 @@ const StyledIframe = styled.iframe`
 `;
 
 export interface ISketchCanvasProps {
-  userPersistedScripts: TSrcScript[];
+  /** List of scripts to load, can be from CDN or locally */
+  scripts: TSrcScript[];
+  /** The p5js code to run, can be updated dynamically */
   code: string;
   globalSetters: {
+    /** Allows recompiling the sketch when called from outside of the */
     setRecompileSketch: Dispatch<
       React.SetStateAction<(() => void | undefined) | undefined>
     >;
+    /** Media stream of the running sketch that can be streamed anywhere else (say in a new window!) */
     setCanvasMediaStream: (s: MediaStream) => void;
+    /** Exposes the iframe ref of the canvas for state management. When providing the ref, you can get into the iframe window state from outside the component */
     setIframeRef: (r: RefObject<HTMLIFrameElement>) => void;
   };
-
+  /** Exposes sketchLoaded if needed */
   setSketchLoaded: () => void;
-  key: number;
+  /** Set to true to create the pop-stream (exposed via setCanvasMediaStream) */
   canvasPopupOpen: boolean;
 }
 
@@ -99,10 +104,7 @@ class SketchCanvas extends Component<ISketchCanvasProps, ISketchCanvasState> {
 
     this.props.globalSetters.setIframeRef(this.state.iframeRef);
 
-    const allScripts = compileScriptList(
-      this.props.code,
-      this.props.userPersistedScripts
-    );
+    const allScripts = compileScriptList(this.props.code, this.props.scripts);
 
     await Promise.all(allScripts.map(loadScript(document))).then(() => {
       Logger.info(`Loaded ${allScripts.length} scripts`);
