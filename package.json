@@ -1,0 +1,19 @@
+{
+  "name": "react-p5js-canvas",
+  "version": "1.0.0",
+  "description": "Audio recompiling p5js canvas that just takes the sketch code in",
+  "main": "src/SketchCanvas/index.tsx",
+  "author": "Julius Uusinarkaus",
+  "license": "MIT",
+  "dependencies": {
+    "js-logger": "^1.6.1",
+    "p5": "^1.6.0",
+    "ramda": "^0.29.0",
+    "react": "^18.2.0",
+    "styled-components": "^5.3.10"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.29.1",
+    "@types/react": "^18.2.0"
+  }
+}
